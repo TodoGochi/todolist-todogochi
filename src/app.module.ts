@@ -4,8 +4,7 @@ import { AppService } from './app.service';
 import { HttpExceptionFilter } from './common/core/filters/http-exception.filter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Config } from './common/environment/config';
-import { UserModule } from './user/user.module';
-import { AuthModule } from './auth/auth.module';
+import { TodolistModule } from './todolist/todolist.module';
 
 @Module({
   imports: [
@@ -19,8 +18,7 @@ import { AuthModule } from './auth/auth.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    UserModule,
-    AuthModule,
+    TodolistModule,
   ],
   controllers: [AppController],
   providers: [
