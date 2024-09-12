@@ -32,23 +32,4 @@ export class Environment {
     database: process.env.DB_DATABASE,
     port: Number(process.env.DB_PORT),
   });
-
-  // JWT
-  @ValidateNested()
-  @Type(() => JwtConfig)
-  JWT: JwtConfig = plainToClass(JwtConfig, {
-    accessSecret: process.env.JWT_ACCESS_SECRET,
-    accessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN,
-    refreshSecret: process.env.JWT_REFRESH_SECRET,
-    refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
-  });
-
-  // Kakao Auth
-  @ValidateNested()
-  @Type(() => KakaoAuthConfig)
-  KAKAO_AUTH: KakaoAuthConfig = plainToClass(KakaoAuthConfig, {
-    clientId: process.env.KAKAO_CLIENT_ID,
-    clientSecret: process.env.KAKAO_CLIENT_SECRET,
-    redirectUri: process.env.KAKAO_REDIRECT_URI,
-  });
 }
