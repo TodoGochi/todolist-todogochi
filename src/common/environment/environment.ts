@@ -19,6 +19,9 @@ export class Environment {
   @IsNumberString()
   PORT = process.env.SERVICE_PORT;
 
+  @IsString()
+  USER_SERVER_ADDR = process.env.USER_SERVER_ADDR;
+
   // Database
   @ValidateNested()
   @Type(() => DatabaseConfig)

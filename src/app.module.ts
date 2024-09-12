@@ -5,6 +5,7 @@ import { HttpExceptionFilter } from './common/core/filters/http-exception.filter
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Config } from './common/environment/config';
 import { TodolistModule } from './todolist/todolist.module';
+import { ServerModule } from './provider/server/server.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { TodolistModule } from './todolist/todolist.module';
       synchronize: true,
     }),
     TodolistModule,
+    ServerModule,
   ],
   controllers: [AppController],
   providers: [

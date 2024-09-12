@@ -4,11 +4,8 @@ import { WeeklyTodoList } from './weekly-todo-list.entity';
 
 @Entity('color_tag')
 export class ColorTag {
-  @PrimaryColumn()
-  color_tag: string;
-
-  @Column({ type: 'varchar', length: 50 })
-  color: string;
+  @PrimaryColumn({ name: 'color_tag' })
+  colorTag: string;
 
   @OneToMany(() => TodoList, (todoList) => todoList.colorTag)
   todos: TodoList[];
