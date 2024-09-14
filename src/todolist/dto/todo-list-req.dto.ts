@@ -1,4 +1,12 @@
-import { IsDate, IsInt, IsString, Matches } from 'class-validator';
+import {
+  IsDate,
+  IsInt,
+  IsNumber,
+  IsString,
+  Matches,
+  Max,
+  Min,
+} from 'class-validator';
 import { ColorTagType } from '../constant/color-tag.type';
 
 export class CreateTodoListReqDto {
@@ -11,11 +19,10 @@ export class CreateTodoListReqDto {
   @IsString()
   todoText: string;
 
-  @IsString()
-  @Matches(/^\d{4}-\d{2}-\d{2}$/, {
-    message: 'targetDate must be in YYYY-MM-DD format',
-  })
-  targetDate: string;
+  @IsInt({ message: 'targetDate must be a valid integer' })
+  @Min(19000101, { message: 'targetDate must be a valid date' })
+  @Max(99991231, { message: 'targetDate must be a valid date' })
+  targetDate: number;
 
   @IsString()
   @Matches(/^\d{2}:\d{2}$/, { message: 'targetTime must be in HH:mm format' })

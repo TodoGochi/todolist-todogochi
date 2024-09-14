@@ -12,15 +12,14 @@ export class TodolistService {
     userId: number;
     todoText: string;
     colorTag: ColorTagType;
-    targetDate: string;
+    targetDate: number;
     targetTime: string;
   }) {
-    const parsedDate = new Date(input.targetDate);
     const todoList = await this.todolistRepository.create({
       userId: input.userId,
       todoText: input.todoText,
       colorTag: input.colorTag,
-      targetDate: parsedDate,
+      targetDate: input.targetDate,
       targetTime: input.targetTime,
     });
 

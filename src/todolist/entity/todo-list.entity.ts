@@ -23,8 +23,8 @@ export class TodoList {
   })
   status: TodoListStatus;
 
-  @Column({ type: 'date', name: 'target_date' })
-  targetDate: Date;
+  @Column({ name: 'target_date' })
+  targetDate: number;
 
   @Column({ name: 'target_time' })
   targetTime: string;
