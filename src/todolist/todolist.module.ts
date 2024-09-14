@@ -2,20 +2,17 @@ import { Module } from '@nestjs/common';
 import { TodolistController } from './todolist.controller';
 import { TodolistService } from './todolist.service';
 import { ColorTagCompleteDate } from './entity/color-tag-complete-date.entity';
-import { ColorTag } from './entity/color-tag.entity';
 import { TodoCompleteDate } from './entity/todo-complete-date.entity';
 import { TodoList } from './entity/todo-list.entity';
 import { WeeklyTodoList } from './entity/weekly-todo-list.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TodoListRepository } from './repository/todo-list.repository';
 import { ServerModule } from 'src/provider/server/server.module';
-import { ColorTagRepository } from './repository/color-tag.repository';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       ColorTagCompleteDate,
-      ColorTag,
       TodoCompleteDate,
       TodoList,
       WeeklyTodoList,
@@ -23,6 +20,6 @@ import { ColorTagRepository } from './repository/color-tag.repository';
     ServerModule,
   ],
   controllers: [TodolistController],
-  providers: [TodolistService, TodoListRepository, ColorTagRepository],
+  providers: [TodolistService, TodoListRepository],
 })
 export class TodolistModule {}

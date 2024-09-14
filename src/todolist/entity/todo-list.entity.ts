@@ -1,11 +1,6 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
-import { ColorTag } from './color-tag.entity';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { TodoListStatus } from '../constant/todo-list-status.enum';
+import { ColorTagType } from '../constant/color-tag.type';
 
 @Entity('todo_list')
 export class TodoList {
@@ -15,19 +10,22 @@ export class TodoList {
   @Column({ name: 'user_id' })
   userId: number;
 
-  @ManyToOne(() => ColorTag, (colorTag) => colorTag.todos)
-  @JoinColumn({ name: 'color_tag' })
-  colorTag: ColorTag;
+  @Column({ name: 'color_tag' })
+  colorTag: ColorTagType;
 
   @Column({ type: 'text', name: 'todo_text' })
   todoText: string;
 
-  @Column()
-  status: number;
+  @Column({
+    type: 'enum',
+    enum: TodoListStatus,
+    default: TodoListStatus.INCOMPLETE,
+  })
+  status: TodoListStatus;
 
   @Column({ type: 'date', name: 'target_date' })
   targetDate: Date;
 
-  @Column({ type: 'time', name: 'target_time' })
+  @Column({ name: 'target_time' })
   targetTime: string;
 }

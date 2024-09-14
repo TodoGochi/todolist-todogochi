@@ -1,11 +1,5 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
-import { ColorTag } from './color-tag.entity';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { ColorTagType } from '../constant/color-tag.type';
 
 @Entity('weekly_todo_list')
 export class WeeklyTodoList {
@@ -15,9 +9,8 @@ export class WeeklyTodoList {
   @Column()
   user_id: number;
 
-  @ManyToOne(() => ColorTag, (colorTag) => colorTag.weeklyTodos)
-  @JoinColumn({ name: 'color_tag' })
-  colorTag: ColorTag;
+  @Column({ name: 'color_tag' })
+  colorTag: ColorTagType;
 
   @Column({ type: 'text' })
   todo_text: string;

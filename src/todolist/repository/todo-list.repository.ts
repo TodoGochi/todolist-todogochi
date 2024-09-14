@@ -13,4 +13,8 @@ export class TodoListRepository {
   async create(data: Partial<TodoList>) {
     return this.todolistRepository.save(data);
   }
+
+  async getOneByPk(todoId: number) {
+    return this.todolistRepository.findOne({ where: { todoId } });
+  }
 }
