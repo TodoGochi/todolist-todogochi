@@ -23,8 +23,7 @@ export class TodolistService {
       targetDate: parsedDate,
       targetTime: input.targetTime,
     });
-    const result = await this.todolistRepository.getOneByPk(todoList.todoId);
-    return result;
+
     return todoList;
   }
 }
