@@ -17,6 +17,14 @@ export class TodolistService {
     targetDate: number;
     targetTime: string;
   }) {
+    const now = new Date();
+    const targetDateTime = this.convertToDateTime(
+      input.targetDate,
+      input.targetTime,
+    );
+    if (targetDateTime < now) {
+      throw new ApiError('TODOLIST-0004');
+    }
     const todoList = await this.todolistRepository.create({
       userId: input.userId,
       todoText: input.todoText,
@@ -48,5 +56,15 @@ export class TodolistService {
     await this.todolistRepository.completeTodolist(input.todoId);
 
     return todoList;
+  }
+
+  private convertToDateTime(targetDate: number, targetTime: string): Date {
+    const targetDateStr = targetDate.toString();
+    const year = parseInt(targetDateStr.slice(0, 4), 10);
+    const month = parseInt(targetDateStr.slice(4, 6), 10) - 1;
+    const day = parseInt(targetDateStr.slice(6, 8), 10);
+    const [hour, minute] = targetTime.split(':').map(Number);
+
+    return new Date(year, month, day, hour, minute);
   }
 }

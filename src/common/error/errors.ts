@@ -21,4 +21,9 @@ export const ERRORS = {
     message: 'TodoList already completed',
     statusCode: HttpStatusCode.BadRequest,
   },
+  'TODOLIST-0004': {
+    errorCode: 'TODOLIST-0004',
+    message: 'You cannot create a to-do list for a past date or time.',
+    statusCode: HttpStatusCode.BadRequest,
+  },
 };
