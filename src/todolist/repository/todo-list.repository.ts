@@ -17,4 +17,10 @@ export class TodoListRepository {
   async getOneByPk(todoId: number) {
     return this.todolistRepository.findOne({ where: { todoId } });
   }
+
+  async getTodoListsByDay(userId: number, targetDate: number) {
+    return this.todolistRepository.find({
+      where: { userId, targetDate },
+    });
+  }
 }

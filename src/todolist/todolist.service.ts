@@ -25,4 +25,13 @@ export class TodolistService {
 
     return todoList;
   }
+
+  async getTodoListsByDay(input: { userId: number; targetDate: number }) {
+    const todoLists = await this.todolistRepository.getTodoListsByDay(
+      input.userId,
+      input.targetDate,
+    );
+
+    return todoLists;
+  }
 }
