@@ -41,3 +41,9 @@ export class GetTodoListsByDayReqParamDto {
   @Max(99991231, { message: 'targetDate must be a valid date' })
   targetDate: number;
 }
+
+export class CompleteTodolistReqBodyDto {
+  @Type(() => Number)
+  @IsInt()
+  todoId: number;
+}

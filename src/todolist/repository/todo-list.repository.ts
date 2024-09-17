@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TodoList } from '../entity/todo-list.entity';
 import { Repository } from 'typeorm';
+import { TodoListStatus } from '../constant/todo-list-status.enum';
 
 @Injectable()
 export class TodoListRepository {
@@ -22,5 +23,12 @@ export class TodoListRepository {
     return this.todolistRepository.find({
       where: { userId, targetDate },
     });
+  }
+
+  async completeTodolist(todoId: number) {
+    return this.todolistRepository.update(
+      { todoId },
+      { status: TodoListStatus.COMPLETE },
+    );
   }
 }
