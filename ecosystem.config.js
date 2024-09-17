@@ -12,7 +12,7 @@ module.exports = {
     {
       name: 'todolist-todogochi',
       script: 'npm',
-      args: ['run', 'start:dev'],
+      args: ['run', 'start:prod'],
     },
   ],
 };
