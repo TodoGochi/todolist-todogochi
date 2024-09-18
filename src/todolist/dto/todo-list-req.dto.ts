@@ -1,5 +1,7 @@
 import {
-  IsDate,
+  ArrayMinSize,
+  ArrayNotEmpty,
+  IsArray,
   IsInt,
   IsNumber,
   IsString,
@@ -46,4 +48,27 @@ export class CompleteTodolistReqBodyDto {
   @Type(() => Number)
   @IsInt()
   todoId: number;
+}
+
+export class CreateWeeklyTodoListReqBodyDto {
+  @IsNumber()
+  userId: number;
+
+  @IsString()
+  todoText: string;
+
+  @IsString()
+  colorTag: ColorTagType;
+
+  @IsArray()
+  @ArrayNotEmpty({ message: 'Days array should not be empty' })
+  @ArrayMinSize(1, { message: 'At least one day is required' })
+  @Matches(/^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)$/, {
+    each: true,
+    message: 'Invalid day of the week',
+  })
+  days: string[];
+
+  @Matches(/^\d{2}:\d{2}$/, { message: 'Invalid time format (HH:mm required)' })
+  targetTime: string;
 }

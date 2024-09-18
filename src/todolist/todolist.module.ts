@@ -8,6 +8,7 @@ import { WeeklyTodoList } from './entity/weekly-todo-list.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TodoListRepository } from './repository/todo-list.repository';
 import { ServerModule } from 'src/provider/server/server.module';
+import { WeeklyTodoListRepository } from './repository/weekly-todo-list.repository';
 
 @Module({
   imports: [
@@ -20,6 +21,6 @@ import { ServerModule } from 'src/provider/server/server.module';
     ServerModule,
   ],
   controllers: [TodolistController],
-  providers: [TodolistService, TodoListRepository],
+  providers: [TodolistService, TodoListRepository, WeeklyTodoListRepository],
 })
 export class TodolistModule {}
