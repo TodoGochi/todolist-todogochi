@@ -75,15 +75,15 @@ export class TodolistService {
     return todoLists;
   }
 
-  async completeTodolist(input: { todoId: number }) {
-    const todoList = await this.todolistRepository.getOneByPk(input.todoId);
+  async completeTodoList(todoId: number) {
+    const todoList = await this.todolistRepository.getOneByPk(todoId);
     if (!todoList) {
       throw new ApiError('TODOLIST-0002');
     }
     if (todoList.status === TodoListStatus.COMPLETE) {
       throw new ApiError('TODOLIST-0003');
     }
-    await this.todolistRepository.completeTodolist(input.todoId);
+    await this.todolistRepository.completeTodolist(todoId);
 
     return todoList;
   }

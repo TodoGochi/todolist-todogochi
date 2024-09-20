@@ -72,3 +72,9 @@ export class CreateWeeklyTodoListReqBodyDto {
   @Matches(/^\d{2}:\d{2}$/, { message: 'Invalid time format (HH:mm required)' })
   targetTime: string;
 }
+
+export class TodoIdReqParamDto {
+  @Type(() => Number)
+  @IsInt()
+  todoId: number;
+}

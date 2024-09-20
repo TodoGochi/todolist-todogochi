@@ -4,6 +4,7 @@ import {
   CreateTodoListReqDto,
   CreateWeeklyTodoListReqBodyDto,
   GetTodoListsByDayReqParamDto,
+  TodoIdReqParamDto,
 } from './dto/todo-list-req.dto';
 
 @Controller('todolist')
@@ -23,5 +24,10 @@ export class TodolistController {
   @Get(':userId/:targetDate')
   async getTodoListsByDay(@Param() params: GetTodoListsByDayReqParamDto) {
     return this.todolistService.getTodoListsByDay(params);
+  }
+
+  @Post('complete/:todoId')
+  async completeTodoList(@Param() params: TodoIdReqParamDto) {
+    return this.todolistService.completeTodoList(params.todoId);
   }
 }
