@@ -41,10 +41,36 @@ export class TodolistService {
   }
 
   async getTodoListsByDay(input: { userId: number; targetDate: number }) {
-    const todoLists = await this.todolistRepository.getTodoListsByDay(
+    let todoLists = await this.todolistRepository.getTodoListsByDay(
       input.userId,
       input.targetDate,
     );
+
+    const weeklyTodoLists = await this.weeklyTodoListRepository.getByUserId(
+      input.userId,
+    );
+    if (weeklyTodoLists.length > 0) {
+      const targetDay = this.getDayOfWeek(input.targetDate);
+
+      const todaysWeeklyTodos = weeklyTodoLists.filter(
+        (weeklyTodo) => weeklyTodo.day === targetDay,
+      );
+
+      const existingTodoTexts = todoLists.map((todo) => todo.todoText);
+
+      for (const weeklyTodo of todaysWeeklyTodos) {
+        if (!existingTodoTexts.includes(weeklyTodo.todoText)) {
+          const newTodo = await this.todolistRepository.create({
+            userId: input.userId,
+            todoText: weeklyTodo.todoText,
+            colorTag: weeklyTodo.colorTag,
+            targetDate: input.targetDate,
+            targetTime: weeklyTodo.targetTime,
+          });
+          todoLists.push(newTodo);
+        }
+      }
+    }
 
     return todoLists;
   }
@@ -69,31 +95,18 @@ export class TodolistService {
     days: string[];
     targetTime: string;
   }) {
-    const { todayDate, todayDay } = this.getTodayDateAndDay();
     for (const day of input.days) {
       const todoData = {
-        user_id: input.userId,
-        todo_text: input.todoText,
+        userId: input.userId,
+        todoText: input.todoText,
         colorTag: input.colorTag,
         day: day,
-        target_time: input.targetTime,
+        targetTime: input.targetTime,
       };
-      if (day === todayDay) {
-        await this.todolistRepository.create({
-          userId: input.userId,
-          todoText: input.todoText,
-          colorTag: input.colorTag,
-          targetDate: todayDate,
-          targetTime: input.targetTime,
-        });
-      }
       await this.weeklyTodoListRepository.create(todoData);
     }
 
-    return await this.getTodoListsByDay({
-      userId: input.userId,
-      targetDate: todayDate,
-    });
+    return { success: true };
   }
 
   private convertToDateTime(targetDate: number, targetTime: string): Date {
@@ -114,5 +127,17 @@ export class TodolistService {
     const todayDay = format(now, 'EEEE', { timeZone });
 
     return { todayDate, todayDay };
+  }
+
+  private getDayOfWeek(targetDate: number): string {
+    const targetDateStr = targetDate.toString();
+    const year = parseInt(targetDateStr.slice(0, 4), 10);
+    const month = parseInt(targetDateStr.slice(4, 6), 10) - 1;
+    const day = parseInt(targetDateStr.slice(6, 8), 10);
+    const timeZone = 'Asia/Seoul';
+    const date = new Date(year, month, day);
+    const dayOfWeek = format(date, 'EEEE', { timeZone });
+
+    return dayOfWeek;
   }
 }

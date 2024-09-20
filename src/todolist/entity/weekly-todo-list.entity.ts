@@ -4,21 +4,20 @@ import { TodoListStatus } from '../constant/todo-list-status.enum';
 
 @Entity('weekly_todo_list')
 export class WeeklyTodoList {
-  @PrimaryGeneratedColumn()
-  weekly_schedule_id: number;
+  @PrimaryGeneratedColumn({ name: 'weekly_schedule_id' })
+  weeklyScheduleId: number;
 
-  @Column()
-  user_id: number;
+  @Column({ name: 'user_id' })
+  userId: number;
 
   @Column({ name: 'color_tag' })
   colorTag: ColorTagType;
 
-  @Column({ type: 'text' })
-  todo_text: string;
+  @Column({ type: 'text', name: 'todo_text' })
+  todoText: string;
 
   @Column({
-    type: 'enum',
-    enum: TodoListStatus,
+    type: 'tinyint',
     default: TodoListStatus.INCOMPLETE,
   })
   status: TodoListStatus;
@@ -27,5 +26,5 @@ export class WeeklyTodoList {
   day: string;
 
   @Column({ name: 'target_time' })
-  target_time: string;
+  targetTime: string;
 }

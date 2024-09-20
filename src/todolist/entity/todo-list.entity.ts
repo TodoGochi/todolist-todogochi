@@ -17,8 +17,7 @@ export class TodoList {
   todoText: string;
 
   @Column({
-    type: 'enum',
-    enum: TodoListStatus,
+    type: 'tinyint',
     default: TodoListStatus.INCOMPLETE,
   })
   status: TodoListStatus;

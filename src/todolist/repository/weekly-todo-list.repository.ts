@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { WeeklyTodoList } from '../entity/weekly-todo-list.entity';
 import { Repository } from 'typeorm';
+import { TodoListStatus } from '../constant/todo-list-status.enum';
 
 @Injectable()
 export class WeeklyTodoListRepository {
@@ -14,9 +15,15 @@ export class WeeklyTodoListRepository {
     return this.weeklyTodoListRepository.save(data);
   }
 
-  async getOneByPk(weekly_schedule_id: number) {
+  async getOneByPk(weeklyScheduleId: number) {
     return this.weeklyTodoListRepository.findOne({
-      where: { weekly_schedule_id },
+      where: { weeklyScheduleId },
+    });
+  }
+
+  async getByUserId(userId: number, status?: number) {
+    return this.weeklyTodoListRepository.find({
+      where: { userId, status },
     });
   }
 }
