@@ -27,4 +27,7 @@ export class TodoList {
 
   @Column({ name: 'target_time' })
   targetTime: string;
+
+  @Column({ name: 'weekly_schedule_id', default: null, nullable: true })
+  weeklyScheduleId: number;
 }

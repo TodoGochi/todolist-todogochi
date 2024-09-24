@@ -78,3 +78,17 @@ export class TodoIdReqParamDto {
   @IsInt()
   todoId: number;
 }
+
+export class GetTodoListsByPeriodReqParamDto {
+  @Type(() => Number)
+  @IsInt()
+  userId: number;
+
+  @Type(() => Number)
+  @IsInt()
+  startDate: number;
+
+  @Type(() => Number)
+  @IsInt()
+  endDate: number;
+}
