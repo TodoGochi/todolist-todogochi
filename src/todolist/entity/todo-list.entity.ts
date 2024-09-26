@@ -25,7 +25,7 @@ export class TodoList {
   @Column({ name: 'target_date' })
   targetDate: number;
 
-  @Column({ name: 'target_time' })
+  @Column({ name: 'target_time', nullable: true })
   targetTime: string;
 
   @Column({ name: 'weekly_schedule_id', default: null, nullable: true })

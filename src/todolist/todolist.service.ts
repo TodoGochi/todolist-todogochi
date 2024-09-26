@@ -19,16 +19,16 @@ export class TodolistService {
     todoText: string;
     colorTag: ColorTagType;
     targetDate: number;
-    targetTime: string;
+    targetTime?: string;
   }) {
-    const now = new Date();
-    const targetDateTime = this.convertToDateTime(
-      input.targetDate,
-      input.targetTime,
-    );
-    if (targetDateTime < now) {
-      throw new ApiError('TODOLIST-0004');
-    }
+    // const now = new Date();
+    // const targetDateTime = this.convertToDateTime(
+    //   input.targetDate,
+    //   input.targetTime,
+    // );
+    // if (targetDateTime < now) {
+    //   throw new ApiError('TODOLIST-0004');
+    // }
     const todoList = await this.todolistRepository.create({
       userId: input.userId,
       todoText: input.todoText,
@@ -41,7 +41,7 @@ export class TodolistService {
   }
 
   async getTodoListsByDay(input: { userId: number; targetDate: number }) {
-    let todoLists = await this.todolistRepository.getTodoListsByDay(
+    const todoLists = await this.todolistRepository.getTodoListsByDay(
       input.userId,
       input.targetDate,
     );
@@ -95,7 +95,7 @@ export class TodolistService {
     todoText: string;
     colorTag: ColorTagType;
     days: string[];
-    targetTime: string;
+    targetTime?: string;
   }) {
     for (const day of input.days) {
       const todoData = {
@@ -154,7 +154,7 @@ export class TodolistService {
       input.userId,
     );
     for (const targetDate of dateList) {
-      let dailyTodoLists = await this.todolistRepository.getTodoListsByDay(
+      const dailyTodoLists = await this.todolistRepository.getTodoListsByDay(
         input.userId,
         targetDate,
       );
