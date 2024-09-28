@@ -85,9 +85,11 @@ export class TodolistService {
     if (todoList.status === TodoListStatus.COMPLETE) {
       throw new ApiError('TODOLIST-0003');
     }
-    await this.todolistRepository.completeTodolist(todoId);
+    const completedTodolist = await this.todolistRepository.completeTodolist(
+      todoId,
+    );
 
-    return todoList;
+    return completedTodolist;
   }
 
   async createWeeklyTodoList(input: {
