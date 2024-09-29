@@ -18,7 +18,7 @@ export class ColorTagCompleteDateRepository {
   async isCompleteDate(
     userId: number,
     completeDate: number,
-    colorTag: ColorTagType,
+    colorTag?: ColorTagType,
   ) {
     return this.colorTagCompleteDateRepository.findOne({
       where: { userId, completeDate, colorTag },

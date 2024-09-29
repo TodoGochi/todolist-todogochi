@@ -10,6 +10,7 @@ import { TodoListRepository } from './repository/todo-list.repository';
 import { ServerModule } from 'src/provider/server/server.module';
 import { WeeklyTodoListRepository } from './repository/weekly-todo-list.repository';
 import { ColorTagCompleteDateRepository } from './repository/color-tag-complete-date.repository';
+import { TodoCompleteDateRepository } from './repository/todo-complete-date.repository';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ColorTagCompleteDateRepository } from './repository/color-tag-complete-
     TodoListRepository,
     WeeklyTodoListRepository,
     ColorTagCompleteDateRepository,
+    TodoCompleteDateRepository,
   ],
 })
 export class TodolistModule {}
