@@ -26,10 +26,10 @@ export class TodoListRepository {
   }
 
   async completeTodolist(todoId: number) {
-    return this.todolistRepository.update(
-      { todoId },
-      { status: TodoListStatus.COMPLETE },
-    );
+    return this.todolistRepository.save({
+      todoId,
+      status: TodoListStatus.COMPLETE,
+    });
   }
 
   async findMany(data: Partial<TodoList>) {
