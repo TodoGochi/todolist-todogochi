@@ -5,9 +5,9 @@ export class TodoCompleteDate {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  user_id: number;
+  @Column({ name: 'user_id' })
+  userId: number;
 
-  @Column({ type: 'date' })
-  complete_date: Date;
+  @Column({ name: 'complete_date' })
+  completeDate: number;
 }

@@ -6,12 +6,15 @@ import { ApiError } from 'src/common/error/api.error';
 import { TodoListStatus } from './constant/todo-list-status.enum';
 import { WeeklyTodoListRepository } from './repository/weekly-todo-list.repository';
 import { toZonedTime, format } from 'date-fns-tz';
+import { ColorTagCompleteDateRepository } from './repository/color-tag-complete-date.repository';
 
 @Injectable()
 export class TodolistService {
   constructor(
     private readonly todolistRepository: TodoListRepository,
     private readonly weeklyTodoListRepository: WeeklyTodoListRepository,
+    private readonly colorTagCompleteDateRepository: ColorTagCompleteDateRepository,
+    private readonly userService: UserServer,
   ) {}
 
   async createSpecificDayTodoList(input: {
@@ -88,7 +91,9 @@ export class TodolistService {
     const completedTodolist = await this.todolistRepository.completeTodolist(
       todoId,
     );
-
+    const colorTag = todoList.colorTag;
+    const completeDate = todoList.targetDate;
+    this.rewardCompleteTodoList(todoList.userId, completeDate, colorTag);
     return completedTodolist;
   }
 
@@ -208,5 +213,46 @@ export class TodolistService {
     const month = parseInt(dateStr.slice(4, 6), 10) - 1;
     const day = parseInt(dateStr.slice(6, 8), 10);
     return new Date(year, month, day);
+  }
+
+  private async rewardCompleteTodoList(
+    userId: number,
+    completeDate: number,
+    colorTag: ColorTagType,
+  ) {
+    // 개별 투두리스트 완료시 보상 1코인
+    let rewardCoin = 1;
+    const isAllColorTagInComplete = await this.todolistRepository.findMany({
+      userId,
+      targetDate: completeDate,
+      status: TodoListStatus.INCOMPLETE,
+      colorTag,
+    });
+    if (isAllColorTagInComplete.length === 0) {
+      const isAlReadyColorTagCompleteReward =
+        await this.colorTagCompleteDateRepository.isCompleteDate(
+          userId,
+          completeDate,
+          colorTag,
+        );
+      if (!isAlReadyColorTagCompleteReward) {
+        await this.colorTagCompleteDateRepository.create({
+          userId,
+          completeDate,
+          colorTag,
+        });
+      }
+      // 색상 태그 투두리스트 완료시 보상 2코인
+      rewardCoin = 2;
+
+      await this.userService.post({
+        path: `/user/${userId}/coin-transactions`,
+        data: {
+          changeAmount: -500,
+          description: `컬러태그 (${colorTag}) 완료`,
+        },
+      });
+      return;
+    }
   }
 }

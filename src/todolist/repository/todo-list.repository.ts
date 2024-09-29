@@ -31,4 +31,8 @@ export class TodoListRepository {
       { status: TodoListStatus.COMPLETE },
     );
   }
+
+  async findMany(data: Partial<TodoList>) {
+    return this.todolistRepository.find({ where: data });
+  }
 }
