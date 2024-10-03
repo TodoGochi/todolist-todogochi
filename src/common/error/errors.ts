@@ -26,4 +26,9 @@ export const ERRORS = {
     message: 'You cannot create a to-do list for a past date or time.',
     statusCode: HttpStatusCode.BadRequest,
   },
+  'TODOLIST-0005': {
+    errorCode: 'TODOLIST-0005',
+    message: 'You do not have the required role to access this resource',
+    statusCode: HttpStatusCode.Unauthorized,
+  },
 };

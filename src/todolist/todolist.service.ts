@@ -8,6 +8,7 @@ import { WeeklyTodoListRepository } from './repository/weekly-todo-list.reposito
 import { toZonedTime, format } from 'date-fns-tz';
 import { ColorTagCompleteDateRepository } from './repository/color-tag-complete-date.repository';
 import { TodoCompleteDateRepository } from './repository/todo-complete-date.repository';
+import { omitBy, isUndefined } from 'lodash';
 
 @Injectable()
 export class TodolistService {
@@ -118,26 +119,6 @@ export class TodolistService {
     }
 
     return { success: true };
-  }
-
-  private convertToDateTime(targetDate: number, targetTime: string): Date {
-    const targetDateStr = targetDate.toString();
-    const year = parseInt(targetDateStr.slice(0, 4), 10);
-    const month = parseInt(targetDateStr.slice(4, 6), 10) - 1;
-    const day = parseInt(targetDateStr.slice(6, 8), 10);
-    const [hour, minute] = targetTime.split(':').map(Number);
-
-    return new Date(year, month, day, hour, minute);
-  }
-
-  private getTodayDateAndDay(): { todayDate: number; todayDay: string } {
-    const timeZone = 'Asia/Seoul';
-    const now = toZonedTime(new Date(), timeZone);
-    const todayDateStr = format(now, 'yyyyMMdd', { timeZone });
-    const todayDate = parseInt(todayDateStr, 10);
-    const todayDay = format(now, 'EEEE', { timeZone });
-
-    return { todayDate, todayDay };
   }
 
   private getDayOfWeek(targetDate: number): string {
@@ -280,5 +261,29 @@ export class TodolistService {
     }
 
     return;
+  }
+
+  async updateTodoList(
+    todoId: number,
+    input: {
+      userId?: number;
+      todoText?: string;
+      colorTag?: ColorTagType;
+      targetTime?: string;
+      targetDate?: number;
+    },
+  ) {
+    const todoList = await this.todolistRepository.getOneByPk(todoId);
+    if (!todoList) {
+      throw new ApiError('TODOLIST-0002');
+    }
+    if (todoList.userId !== input.userId) {
+      throw new ApiError('TODOLIST-0005');
+    }
+    const updateData = omitBy(input, isUndefined);
+    Object.assign(todoList, updateData);
+    const updatedTodoList = await this.todolistRepository.save(todoList);
+
+    return updatedTodoList;
   }
 }

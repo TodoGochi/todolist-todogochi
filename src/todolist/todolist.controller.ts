@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { TodolistService } from './todolist.service';
 import {
   CreateTodoListReqDto,
@@ -6,6 +6,7 @@ import {
   GetTodoListsByDayReqParamDto,
   GetTodoListsByPeriodReqParamDto,
   TodoIdReqParamDto,
+  UpdateTodoListReqBodyDto,
 } from './dto/todo-list-req.dto';
 
 @Controller('todolist')
@@ -35,5 +36,13 @@ export class TodolistController {
   @Get('period/:userId/:startDate/:endDate')
   async getTodoListsByPeriod(@Param() params: GetTodoListsByPeriodReqParamDto) {
     return this.todolistService.getTodoListsByPeriod(params);
+  }
+
+  @Put('update/:todoId')
+  async updateTodoList(
+    @Param() params: TodoIdReqParamDto,
+    @Body() body: UpdateTodoListReqBodyDto,
+  ) {
+    return this.todolistService.updateTodoList(params.todoId, body);
   }
 }

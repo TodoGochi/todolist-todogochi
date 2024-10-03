@@ -94,3 +94,25 @@ export class GetTodoListsByPeriodReqParamDto {
   @IsInt()
   endDate: number;
 }
+
+export class UpdateTodoListReqBodyDto {
+  @IsOptional()
+  @IsInt()
+  userId: number;
+
+  @IsString()
+  @IsOptional()
+  todoText: string;
+
+  @IsString()
+  @IsOptional()
+  colorTag: ColorTagType;
+
+  @IsOptional()
+  @Matches(/^\d{2}:\d{2}$/, { message: 'Invalid time format (HH:mm required)' })
+  targetTime: string;
+
+  @IsOptional()
+  @IsInt()
+  targetDate: number;
+}
