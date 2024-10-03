@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { TodolistService } from './todolist.service';
 import {
   CreateTodoListReqDto,
@@ -7,6 +16,7 @@ import {
   GetTodoListsByPeriodReqParamDto,
   TodoIdReqParamDto,
   UpdateTodoListReqBodyDto,
+  UserIdReqQueryDto,
 } from './dto/todo-list-req.dto';
 
 @Controller('todolist')
@@ -44,5 +54,16 @@ export class TodolistController {
     @Body() body: UpdateTodoListReqBodyDto,
   ) {
     return this.todolistService.updateTodoList(params.todoId, body);
+  }
+
+  @Delete('delete/:todoId')
+  async deleteTodoList(
+    @Param() params: TodoIdReqParamDto,
+    @Query() query: UserIdReqQueryDto,
+  ) {
+    return this.todolistService.deleteTodoList({
+      todoId: params.todoId,
+      userId: query.userId,
+    });
   }
 }

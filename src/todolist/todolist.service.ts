@@ -286,4 +286,17 @@ export class TodolistService {
 
     return updatedTodoList;
   }
+
+  async deleteTodoList(input: { todoId: number; userId: number }) {
+    const todoList = await this.todolistRepository.getOneByPk(input.todoId);
+    if (!todoList) {
+      throw new ApiError('TODOLIST-0002');
+    }
+    if (todoList.userId !== input.userId) {
+      throw new ApiError('TODOLIST-0005');
+    }
+    await this.todolistRepository.deleteOne(input.todoId);
+
+    return { success: true };
+  }
 }

@@ -43,4 +43,8 @@ export class TodoListRepository {
   async updateOne(todoId: number, data: Partial<TodoList>) {
     return this.todolistRepository.update({ todoId }, data);
   }
+
+  async deleteOne(todoId: number) {
+    return this.todolistRepository.delete({ todoId });
+  }
 }

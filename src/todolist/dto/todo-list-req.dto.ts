@@ -116,3 +116,9 @@ export class UpdateTodoListReqBodyDto {
   @IsInt()
   targetDate: number;
 }
+
+export class UserIdReqQueryDto {
+  @Type(() => Number)
+  @IsInt()
+  userId: number;
+}
