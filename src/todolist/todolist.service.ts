@@ -97,8 +97,12 @@ export class TodolistService {
     );
     const colorTag = todoList.colorTag;
     const completeDate = todoList.targetDate;
-    this.rewardCompleteTodoList(todoList.userId, completeDate, colorTag);
-    return completedTodolist;
+    const rewardCoin = this.rewardCompleteTodoList(
+      todoList.userId,
+      completeDate,
+      colorTag,
+    );
+    return { ...completedTodolist, rewardCoin };
   }
 
   async createWeeklyTodoList(input: {
@@ -204,6 +208,7 @@ export class TodolistService {
     completeDate: number,
     colorTag: ColorTagType,
   ) {
+    let rewardCoin = 0;
     const isAllColorTagInComplete = await this.todolistRepository.findMany({
       userId,
       targetDate: completeDate,
@@ -231,6 +236,7 @@ export class TodolistService {
             description: `컬러태그 ${colorTag} 완료`,
           },
         });
+        rewardCoin += 1;
       }
     }
     const isAllAlReadyAllColorTagCompleteReward =
@@ -258,10 +264,11 @@ export class TodolistService {
             description: `모든 투두리스트 완료`,
           },
         });
+        rewardCoin += 2;
       }
     }
 
-    return;
+    return rewardCoin;
   }
 
   async updateTodoList(
