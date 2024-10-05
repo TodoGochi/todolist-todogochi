@@ -47,4 +47,8 @@ export class TodoListRepository {
   async deleteOne(todoId: number) {
     return this.todolistRepository.delete({ todoId });
   }
+
+  async deleteMany(where: any) {
+    return this.todolistRepository.delete(where);
+  }
 }

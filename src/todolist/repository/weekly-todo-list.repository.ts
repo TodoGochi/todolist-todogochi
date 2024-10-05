@@ -26,4 +26,8 @@ export class WeeklyTodoListRepository {
       where: { userId, status },
     });
   }
+
+  async deleteOne(weeklyScheduleId: number) {
+    return this.weeklyTodoListRepository.delete({ weeklyScheduleId });
+  }
 }

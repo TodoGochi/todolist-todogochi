@@ -9,6 +9,7 @@ import { toZonedTime, format } from 'date-fns-tz';
 import { ColorTagCompleteDateRepository } from './repository/color-tag-complete-date.repository';
 import { TodoCompleteDateRepository } from './repository/todo-complete-date.repository';
 import { omitBy, isUndefined } from 'lodash';
+import { MoreThanOrEqual } from 'typeorm';
 
 @Injectable()
 export class TodolistService {
@@ -295,8 +296,24 @@ export class TodolistService {
     if (todoList.userId !== input.userId) {
       throw new ApiError('TODOLIST-0005');
     }
+    if (todoList.weeklyScheduleId) {
+      const today = this.formatDateToNumber(new Date());
+      await this.weeklyTodoListRepository.deleteOne(todoList.weeklyScheduleId);
+      await this.todolistRepository.deleteMany({
+        weeklyScheduleId: todoList.weeklyScheduleId,
+        targetDate: MoreThanOrEqual(today),
+      });
+    }
     await this.todolistRepository.deleteOne(input.todoId);
 
     return { success: true };
+  }
+
+  private formatDateToNumber(date: Date): number {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+
+    return parseInt(`${year}${month}${day}`, 10);
   }
 }
