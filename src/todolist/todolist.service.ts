@@ -97,11 +97,12 @@ export class TodolistService {
     );
     const colorTag = todoList.colorTag;
     const completeDate = todoList.targetDate;
-    const rewardCoin = this.rewardCompleteTodoList(
+    const rewardCoin = await this.rewardCompleteTodoList(
       todoList.userId,
       completeDate,
       colorTag,
     );
+
     return { ...completedTodolist, rewardCoin };
   }
 
